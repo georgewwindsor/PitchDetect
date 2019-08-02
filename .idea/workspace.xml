@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f457691-5fad-494b-a558-80073962006a" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/js/Pitch.html" />
       <change beforePath="" afterPath="$PROJECT_DIR$/js/PitchD.js" />
       <change beforePath="$PROJECT_DIR$/js/pitchdetect.js" afterPath="$PROJECT_DIR$/js/pitchdetect.js" />
     </list>
@@ -29,7 +30,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PitchD.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PitchD.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/PitchD.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="15">
@@ -39,7 +40,22 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Pitch.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/Pitch.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="304">
+              <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>getusermedia</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -48,6 +64,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/js/PitchD.js" />
+        <option value="$PROJECT_DIR$/js/Pitch.html" />
       </list>
     </option>
   </component>
@@ -129,6 +146,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
   </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/js" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -154,12 +176,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1564740268277</updated>
-      <workItem from="1564740269976" duration="45000" />
+      <workItem from="1564740269976" duration="808000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45000" />
+    <option name="totallyTimeSpent" value="808000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1730" y="53" width="1692" height="898" extended-state="0" />
@@ -210,6 +232,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Pitch.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
           <folding />
         </state>
       </provider>
