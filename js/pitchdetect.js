@@ -21,6 +21,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+        (function (global){
+            "use strict";
+
+            if (global.AnalyserNode && !global.AnalyserNode.prototype.getFloatTimeDomainData) {
+                var uint8 = new Uint8Array(2048);
+                global.AnalyserNode.prototype.getFloatTimeDomainData = function(array) {
+                    this.getByteTimeDomainData(uint8);
+                    for (var i = 0, imax = array.length; i < imax; i++) {
+                        array[i] = (uint8[i] - 128) * 0.0078125;
+                    }
+                };
+            }
+
+        }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+    },{}]},{},[1]);
+
+
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
@@ -31,7 +49,7 @@ var analyser = null;
 var theBuffer = null;
 var DEBUGCANVAS = null;
 var mediaStreamSource = null;
-var detectorElem, 
+var detectorElem,
 	canvasElem,
 	waveCanvas,
 	pitchElem,
@@ -42,67 +60,74 @@ var detectorElem,
 window.onload = function() {
 	audioContext = new AudioContext();
 	MAX_SIZE = Math.max(4,Math.floor(audioContext.sampleRate/5000));	// corresponds to a 5kHz signal
-	var request = new XMLHttpRequest();
-	request.open("GET", "../sounds/whistling3.ogg", true);
-	request.responseType = "arraybuffer";
-	request.onload = function() {
-	  audioContext.decodeAudioData( request.response, function(buffer) { 
-	    	theBuffer = buffer;
-		} );
-	}
-	request.send();
+	// var request = new XMLHttpRequest();
+	// request.open("GET", "../sounds/whistling3.ogg", true);
+	// request.responseType = "arraybuffer";
+	// request.onload = function() {
+	//   audioContext.decodeAudioData( request.response, function(buffer) {
+	//     	theBuffer = buffer;
+	// 	} );
+	// }
+	// request.send();
 
-	detectorElem = document.getElementById( "detector" );
-	canvasElem = document.getElementById( "output" );
-	DEBUGCANVAS = document.getElementById( "waveform" );
-	if (DEBUGCANVAS) {
-		waveCanvas = DEBUGCANVAS.getContext("2d");
-		waveCanvas.strokeStyle = "black";
-		waveCanvas.lineWidth = 1;
-	}
-	pitchElem = document.getElementById( "pitch" );
-	noteElem = document.getElementById( "note" );
-	detuneElem = document.getElementById( "detune" );
-	detuneAmount = document.getElementById( "detune_amt" );
+	// detectorElem = document.getElementById( "detector" );
+	// canvasElem = document.getElementById( "output" );
+	// DEBUGCANVAS = document.getElementById( "waveform" );
+	// if (DEBUGCANVAS) {
+	// 	waveCanvas = DEBUGCANVAS.getContext("2d");
+	// 	waveCanvas.strokeStyle = "black";
+	// 	waveCanvas.lineWidth = 1;
+	// }
+	// pitchElem = document.getElementById( "pitch" );
+	// noteElem = document.getElementById( "note" );
+	// detuneElem = document.getElementById( "detune" );
+	// detuneAmount = document.getElementById( "detune_amt" );
+    //
+	// detectorElem.ondragenter = function () {
+	// 	this.classList.add("droptarget");
+	// 	return false; };
+	// detectorElem.ondragleave = function () { this.classList.remove("droptarget"); return false; };
+	// detectorElem.ondrop = function (e) {
+  	// 	this.classList.remove("droptarget");
+  	// 	e.preventDefault();
+	// 	theBuffer = null;
+    //
+	//   	var reader = new FileReader();
+	//   	reader.onload = function (event) {
+	//   		audioContext.decodeAudioData( event.target.result, function(buffer) {
+	//     		theBuffer = buffer;
+	//   		}, function(){alert("error loading!");} );
+    //
+	//   	};
+	//   	reader.onerror = function (event) {
+	//   		alert("Error: " + reader.error );
+	// 	};
+	//   	reader.readAsArrayBuffer(e.dataTransfer.files[0]);
+	//   	return false;
+	// };
 
-	detectorElem.ondragenter = function () { 
-		this.classList.add("droptarget"); 
-		return false; };
-	detectorElem.ondragleave = function () { this.classList.remove("droptarget"); return false; };
-	detectorElem.ondrop = function (e) {
-  		this.classList.remove("droptarget");
-  		e.preventDefault();
-		theBuffer = null;
 
-	  	var reader = new FileReader();
-	  	reader.onload = function (event) {
-	  		audioContext.decodeAudioData( event.target.result, function(buffer) {
-	    		theBuffer = buffer;
-	  		}, function(){alert("error loading!");} ); 
-
-	  	};
-	  	reader.onerror = function (event) {
-	  		alert("Error: " + reader.error );
-		};
-	  	reader.readAsArrayBuffer(e.dataTransfer.files[0]);
-	  	return false;
-	};
-
+    toggleLiveInput();
 
 
 }
 
-function error() {
-    alert('Stream generation failed.');
+function error(xerror) {
+    console.log('Stream generation failed.');
+console.log(xerror)
 }
 
 function getUserMedia(dictionary, callback) {
     try {
-        navigator.getUserMedia = 
-        	navigator.getUserMedia ||
-        	navigator.webkitGetUserMedia ||
-        	navigator.mozGetUserMedia;
-        navigator.getUserMedia(dictionary, callback, error);
+
+
+
+        navigator.mediaDevices.getUserMedia(dictionary)
+            .then(callback)
+            .catch(error);
+
+
+
     } catch (e) {
         alert('getUserMedia threw exception :' + e);
     }
@@ -111,7 +136,7 @@ function getUserMedia(dictionary, callback) {
 function gotStream(stream) {
     // Create an AudioNode from the stream.
     mediaStreamSource = audioContext.createMediaStreamSource(stream);
-
+console.log('Got Stream')
     // Connect it to the destination.
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
@@ -158,15 +183,8 @@ function toggleLiveInput() {
     }
     getUserMedia(
     	{
-            "audio": {
-                "mandatory": {
-                    "googEchoCancellation": "false",
-                    "googAutoGainControl": "false",
-                    "googNoiseSuppression": "false",
-                    "googHighpassFilter": "false"
-                },
-                "optional": []
-            },
+            "audio": true,
+			"video":false
         }, gotStream);
 }
 
@@ -297,10 +315,10 @@ function autoCorrelate( buf, sampleRate ) {
 			// we need to do a curve fit on correlations[] around best_offset in order to better determine precise
 			// (anti-aliased) offset.
 
-			// we know best_offset >=1, 
-			// since foundGoodCorrelation cannot go to true until the second pass (offset=1), and 
+			// we know best_offset >=1,
+			// since foundGoodCorrelation cannot go to true until the second pass (offset=1), and
 			// we can't drop into this clause until the following pass (else if).
-			var shift = (correlations[best_offset+1] - correlations[best_offset-1])/correlations[best_offset];  
+			var shift = (correlations[best_offset+1] - correlations[best_offset-1])/correlations[best_offset];
 			return sampleRate/(best_offset+(8*shift));
 		}
 		lastCorrelation = correlation;
@@ -315,6 +333,8 @@ function autoCorrelate( buf, sampleRate ) {
 
 function updatePitch( time ) {
 	var cycles = new Array;
+
+	//console.log(analyser)
 	analyser.getFloatTimeDomainData( buf );
 	var ac = autoCorrelate( buf, audioContext.sampleRate );
 	// TODO: Paint confidence meter on canvasElem here.
@@ -344,27 +364,34 @@ function updatePitch( time ) {
 	}
 
  	if (ac == -1) {
- 		detectorElem.className = "vague";
-	 	pitchElem.innerText = "--";
-		noteElem.innerText = "-";
-		detuneElem.className = "";
-		detuneAmount.innerText = "--";
+ 		// detectorElem.className = "vague";
+	 	// pitchElem.innerText = "--";
+		// noteElem.innerText = "-";
+		// detuneElem.className = "";
+		// detuneAmount.innerText = "--";
  	} else {
-	 	detectorElem.className = "confident";
+	 	//detectorElem.className = "confident";
 	 	pitch = ac;
-	 	pitchElem.innerText = Math.round( pitch ) ;
+	 	//pitchElem.innerText = Math.round( pitch ) ;
 	 	var note =  noteFromPitch( pitch );
-		noteElem.innerHTML = noteStrings[note%12];
+
+
+//        console.log(pitch+"___"+note)
+
+
+        window.postMessage(pitch+"___"+note);
+
+	//	noteElem.innerHTML = noteStrings[note%12];
 		var detune = centsOffFromPitch( pitch, note );
 		if (detune == 0 ) {
-			detuneElem.className = "";
-			detuneAmount.innerHTML = "--";
+		//	detuneElem.className = "";
+		//	detuneAmount.innerHTML = "--";
 		} else {
-			if (detune < 0)
-				detuneElem.className = "flat";
-			else
-				detuneElem.className = "sharp";
-			detuneAmount.innerHTML = Math.abs( detune );
+		//	if (detune < 0)
+		//		detuneElem.className = "flat";
+		//	else
+		//		detuneElem.className = "sharp";
+	//		detuneAmount.innerHTML = Math.abs( detune );
 		}
 	}
 
